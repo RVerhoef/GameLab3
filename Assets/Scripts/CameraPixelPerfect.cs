@@ -6,6 +6,6 @@ public class CameraPixelPerfect : MonoBehaviour
 	
 	void Awake () 
 	{
-		Camera.orthographicSize = ((float)Screen.height) / 2;
+		GetComponent<Camera>().orthographicSize = ((float)Screen.height) / 2;
 	}
 }
