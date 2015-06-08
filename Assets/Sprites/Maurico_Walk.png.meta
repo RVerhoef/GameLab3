@@ -1,12 +1,13 @@
 fileFormatVersion: 2
 guid: 62cae30f6918a9f45abb3c626de99fb7
-timeCreated: 1433747465
+timeCreated: 1433750366
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Maurico_Walk_0
     21300002: Maurico_Walk_1
     21300004: Maurico_Walk_2
+    21300006: Maurico_Walk_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,9 +57,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 76
         width: 64
-        height: 152
+        height: 75
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -68,17 +69,27 @@ TextureImporter:
         x: 68
         y: 76
         width: 60
-        height: 72
+        height: 71
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Maurico_Walk_2
       rect:
         serializedVersion: 2
-        x: 68
+        x: 2
         y: 0
         width: 60
-        height: 72
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Maurico_Walk_3
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 60
+        height: 71
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
