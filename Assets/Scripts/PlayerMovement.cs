@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 	void Awake ()
 	{
 		_rigidBody = this.GetComponent<Rigidbody>();
-		_animator = this.GetComponent <Animator>();
+		_animator = this.GetComponent<Animator>();
 	}
 
 	void Update () 
@@ -41,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
 
 		if(Input.GetButton ("Jump") && _animator.GetBool("Jumping") == false)
 		{ 
-			_animator.SetBool("Jumping",true);
 			_rigidBody.AddForce(transform.up * _jumpSpeed);
 		}
 	}
@@ -49,5 +48,10 @@ public class PlayerMovement : MonoBehaviour
 	void OnCollisionEnter (Collision collision)
 	{
 		_animator.SetBool("Jumping",false);
+	}
+
+	void OnCollisionExit (Collision collision)
+	{
+		_animator.SetBool("Jumping",true);
 	}
 }

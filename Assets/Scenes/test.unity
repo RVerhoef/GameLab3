@@ -409,6 +409,10 @@ Prefab:
       propertyPath: m_Center.y
       value: -360
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.x
+      value: -500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d4584e47ff272ab498e54a9068f97b2c, type: 2}
   m_IsPrefabParent: 0
