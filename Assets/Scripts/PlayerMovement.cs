@@ -43,6 +43,12 @@ public class PlayerMovement : MonoBehaviour
 		{ 
 			_rigidBody.AddForce(transform.up * _jumpSpeed);
 		}
+
+		if(Input.GetButton ("Fire1"))
+		{
+			_animator.SetBool("Punching",true);
+			_animator.SetBool("Punching",false);
+		}
 	}
 
 	void OnCollisionEnter (Collision collision)
