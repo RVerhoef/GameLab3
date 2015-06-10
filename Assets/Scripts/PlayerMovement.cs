@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour 
 {
- 	private float _speed = 500;
-	private float _jumpSpeed = 30000;
+ 	private float _speed = 60000;
+	private float _jumpSpeed = 60000;
 	private float _direction = 1;
 	private Rigidbody _rigidBody;
 	private Animator _animator;
@@ -15,10 +15,12 @@ public class PlayerMovement : MonoBehaviour
 		_animator = this.GetComponent<Animator>();
 	}
 
-	void Update () 
+	void FixedUpdate () 
 	{
-		this.transform.Translate ((Input.GetAxis ("Horizontal") * (_speed)) * Time.deltaTime, 0, 0);
+		//movement
+		_rigidBody.velocity = new Vector3 ((Input.GetAxis ("Horizontal") * (_speed)) * Time.deltaTime, _rigidBody.velocity.y, _rigidBody.velocity.z);
 
+		//flip sprite
 		if(Input.GetAxis ("Horizontal") > 0)
 		{
 			_direction = 1;
@@ -28,8 +30,9 @@ public class PlayerMovement : MonoBehaviour
 			_direction = -1;
 		}
 
-		transform.localScale = new Vector3(_direction ,1 ,1);
+		transform.localScale = new Vector3(_direction ,transform.localScale.y ,transform.localScale.z);
 
+		//set & unset walking animation
 		if(Input.GetButton ("Horizontal") && _animator.GetBool("Jumping") == false)
 		{
 			_animator.SetBool("Walking",true);
@@ -39,25 +42,38 @@ public class PlayerMovement : MonoBehaviour
 			_animator.SetBool("Walking",false);
 		}
 
+		//jumping
 		if(Input.GetButton ("Jump") && _animator.GetBool("Jumping") == false)
 		{ 
 			_rigidBody.AddForce(transform.up * _jumpSpeed);
 		}
 
+		//if(_animator.GetBool("Jumping"))
+		//{
+			//_rigidBody.AddForce(new Vector3(0, -2000, 0));
+		//}
+
+		//attacking
 		if(Input.GetButton ("Fire1"))
 		{
 			_animator.SetBool("Punching",true);
+		}
+		else
+		{
 			_animator.SetBool("Punching",false);
 		}
 	}
 
 	void OnCollisionEnter (Collision collision)
 	{
+		//set jumping animation
+		 Debug.Log("Hit!");
 		_animator.SetBool("Jumping",false);
 	}
 
 	void OnCollisionExit (Collision collision)
 	{
+		//unset jumping animation
 		_animator.SetBool("Jumping",true);
 	}
 }
