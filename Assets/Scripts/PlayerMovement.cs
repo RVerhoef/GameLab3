@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour 
 {
- 	private float _speed = 60000;
-	private float _jumpSpeed = 60000;
+ 	private float _speed = 50000;
+	private float _jumpSpeed = 70000;
 	private float _direction = 1;
 	private Rigidbody _rigidBody;
 	private Animator _animator;
@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
 		//}
 
 		//attacking
-		if(Input.GetButton ("Fire1"))
+		if(Input.GetButton ("Fire1") && _animator.GetBool("Jumping") == false)
 		{
 			_animator.SetBool("Punching",true);
 		}
