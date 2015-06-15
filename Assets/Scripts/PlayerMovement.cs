@@ -5,21 +5,24 @@ public class PlayerMovement : MonoBehaviour
 {
  	private float _speed = 50000;
 	private float _jumpSpeed = 70000;
+	private float _attackPower = 50000;
 	private float _direction = 1;
+	private float _minScreenHeight;
+	public int _lives = 3;
+	public GameObject _respawnPoint;
 	private Rigidbody _rigidBody;
 	private Animator _animator;
 
 	void Awake ()
 	{
-		_rigidBody = this.GetComponent<Rigidbody>();
-		_animator = this.GetComponent<Animator>();
+		_minScreenHeight = Screen.height - Screen.height * 2;
+		_rigidBody = GetComponent<Rigidbody>();
+		_animator = GetComponent<Animator>();
+		_respawnPoint = GameObject.FindGameObjectWithTag ("Respawn");
 	}
 
 	void FixedUpdate () 
 	{
-		//movement
-		_rigidBody.velocity = new Vector3 ((Input.GetAxis ("Horizontal") * (_speed)) * Time.deltaTime, _rigidBody.velocity.y, _rigidBody.velocity.z);
-
 		//flip sprite
 		if(Input.GetAxis ("Horizontal") > 0)
 		{
@@ -33,8 +36,10 @@ public class PlayerMovement : MonoBehaviour
 		transform.localScale = new Vector3(_direction ,transform.localScale.y ,transform.localScale.z);
 
 		//set & unset walking animation
-		if(Input.GetButton ("Horizontal") && _animator.GetBool("Jumping") == false)
+		if(Input.GetButton ("Horizontal") && _animator.GetBool("Jumping") == false && _animator.GetBool("Punching") == false)
 		{
+			//movement
+			_rigidBody.velocity = new Vector3 ((Input.GetAxis ("Horizontal") * (_speed)) * Time.deltaTime, _rigidBody.velocity.y, _rigidBody.velocity.z);
 			_animator.SetBool("Walking",true);
 		}
 		else
@@ -62,18 +67,52 @@ public class PlayerMovement : MonoBehaviour
 		{
 			_animator.SetBool("Punching",false);
 		}
+
+		if(Input.GetButton ("Fire1") && _animator.GetBool("Jumping") == true)
+		{
+			_animator.SetBool("Kicking",true);
+		}
+		else
+		{
+			_animator.SetBool("Kicking",false);
+		}
+		 
+		//the player dies if he falls off the screen
+		//if (transform.localPosition.y < _minScreenHeight) 
+		//{
+			//_animator.SetBool ("Dieing", true);
+			//_rigidBody.AddForce (transform.up * 3000);
+		//} 
+		if (transform.localPosition.y < _minScreenHeight) 
+		{
+			_animator.SetBool ("Dieing", false);
+			_lives -= 1;
+			transform.localPosition = new Vector3(_respawnPoint.transform.localPosition.x, _respawnPoint.transform.localPosition.y, transform.localPosition.z);
+		}
 	}
 
 	void OnCollisionEnter (Collision collision)
 	{
-		//set jumping animation
-		 Debug.Log("Hit!");
-		_animator.SetBool("Jumping",false);
+			//set jumping animation
+		 	Debug.Log("Hit!");
+			_animator.SetBool("Jumping",false);
 	}
 
 	void OnCollisionExit (Collision collision)
 	{
-		//unset jumping animation
-		_animator.SetBool("Jumping",true);
+		if(collision.gameObject.tag == "Platform")
+		{
+			//unset jumping animation
+			_animator.SetBool("Jumping",true);
+		}
+	}
+
+	void OnCollisionStay (Collision collision)
+	{
+		if (collision.gameObject.tag == "Player2" && _animator.GetBool("Punching") == true || _animator.GetBool("Kicking") == true) 
+		{
+			Debug.Log("Attack has hit!");
+			collision.rigidbody.AddForce(transform.right * _attackPower);
+		}
 	}
 }

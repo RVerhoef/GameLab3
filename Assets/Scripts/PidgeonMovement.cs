@@ -8,11 +8,12 @@ public class PidgeonMovement : MonoBehaviour
 
 	void Awake () 
 	{
-		_rigidBody = this.GetComponent<Rigidbody>();
+		_rigidBody = GetComponent<Rigidbody>();
 	}
 
 	void FixedUpdate () 
 	{
+		//makes the pidgeon fly
 		_rigidBody.velocity = new Vector3 (_speed * Time.deltaTime, _rigidBody.velocity.y, _rigidBody.velocity.z);
 	}
 }
