@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 	private float _attackPower = 50000;
 	private float _direction = 1;
 	private float _minScreenHeight;
+	public string _playerNumber;
 	public int _lives = 3;
 	public GameObject _respawnPoint;
 	private Rigidbody _rigidBody;
@@ -19,16 +20,25 @@ public class PlayerMovement : MonoBehaviour
 		_rigidBody = GetComponent<Rigidbody>();
 		_animator = GetComponent<Animator>();
 		_respawnPoint = GameObject.FindGameObjectWithTag ("Respawn");
+
+		if(gameObject.name == "Player1")
+		{
+			_playerNumber = "1";
+		}
+		else if (gameObject.name == "Player2")
+		{
+			_playerNumber = "2";
+		}
 	}
 
 	void FixedUpdate () 
 	{
 		//flip sprite
-		if(Input.GetAxis ("Horizontal") > 0)
+		if(Input.GetAxis ("Horizontal" + _playerNumber) > 0)
 		{
 			_direction = 1;
 		}
-		else if(Input.GetAxis ("Horizontal") < 0)
+		else if(Input.GetAxis ("Horizontal" + _playerNumber) < 0)
 		{
 			_direction = -1;
 		}
@@ -36,10 +46,10 @@ public class PlayerMovement : MonoBehaviour
 		transform.localScale = new Vector3(_direction ,transform.localScale.y ,transform.localScale.z);
 
 		//set & unset walking animation
-		if(Input.GetButton ("Horizontal") && _animator.GetBool("Jumping") == false && _animator.GetBool("Punching") == false)
+		if(Input.GetAxis ("Horizontal" + _playerNumber) > 0 || Input.GetAxis ("Horizontal" + _playerNumber) < 0 && _animator.GetBool("Jumping") == false && _animator.GetBool("Punching") == false)
 		{
 			//movement
-			_rigidBody.velocity = new Vector3 ((Input.GetAxis ("Horizontal") * (_speed)) * Time.deltaTime, _rigidBody.velocity.y, _rigidBody.velocity.z);
+			_rigidBody.velocity = new Vector3 ((Input.GetAxis ("Horizontal" + _playerNumber) * (_speed)) * Time.deltaTime, _rigidBody.velocity.y, _rigidBody.velocity.z);
 			_animator.SetBool("Walking",true);
 		}
 		else
@@ -48,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//jumping
-		if(Input.GetButton ("Jump") && _animator.GetBool("Jumping") == false)
+		if(Input.GetButton ("Jump" + _playerNumber) && _animator.GetBool("Jumping") == false)
 		{ 
 			_rigidBody.AddForce(transform.up * _jumpSpeed);
 		}
@@ -59,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
 		//}
 
 		//attacking
-		if(Input.GetButton ("Fire1") && _animator.GetBool("Jumping") == false)
+		if(Input.GetButton ("Fire" + _playerNumber) && _animator.GetBool("Jumping") == false)
 		{
 			_animator.SetBool("Punching",true);
 		}
@@ -68,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 			_animator.SetBool("Punching",false);
 		}
 
-		if(Input.GetButton ("Fire1") && _animator.GetBool("Jumping") == true)
+		if(Input.GetButton ("Fire" + _playerNumber) && _animator.GetBool("Jumping") == true)
 		{
 			_animator.SetBool("Kicking",true);
 		}
@@ -109,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
 
 	void OnCollisionStay (Collision collision)
 	{
-		if (collision.gameObject.tag == "Player2" && _animator.GetBool("Punching") == true || _animator.GetBool("Kicking") == true) 
+		if (collision.gameObject.tag == "Player" && _animator.GetBool("Punching") == true || _animator.GetBool("Kicking") == true) 
 		{
 			Debug.Log("Attack has hit!");
 			collision.rigidbody.AddForce(transform.right * _attackPower);
