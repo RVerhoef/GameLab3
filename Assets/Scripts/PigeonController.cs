@@ -55,10 +55,9 @@ public class PigeonController : MonoBehaviour
     
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log("yolo");
         if(other.gameObject.tag == "Player")
         {
-            hitPS.Play();
+            Instantiate(hitPS, this.transform.position, this.transform.rotation);
             stationary = false;
         }
     }
