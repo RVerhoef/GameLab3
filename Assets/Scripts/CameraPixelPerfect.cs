@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//Written by Rob Verhoef
+using UnityEngine;
 using System.Collections;
 
 public class CameraPixelPerfect : MonoBehaviour 

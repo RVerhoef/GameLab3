@@ -103,8 +103,8 @@ MonoBehaviour:
   speed: 5
   cruiseHeight: 625
   shitCooldown: .25
-  birdShit: {fileID: 151204, guid: d90bc8185e81a954dbf549f621641e0e, type: 2}
-  hitPS: {fileID: 0}
+  birdShit: {fileID: 152952, guid: d90bc8185e81a954dbf549f621641e0e, type: 2}
+  hitPS: {fileID: 19802898, guid: 70c58ec389dad6a4b84bcddee765c78c, type: 2}
 --- !u!114 &11491274
 MonoBehaviour:
   m_ObjectHideFlags: 1

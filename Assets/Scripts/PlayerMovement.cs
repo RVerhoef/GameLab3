@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//Written by Rob Verhoef
+using UnityEngine;
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour 
@@ -34,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
 
 	void FixedUpdate () 
 	{
-
 		//flip sprite
 		if(Input.GetAxis ("Horizontal" + _playerNumber) > 0)
 		{
@@ -47,8 +47,8 @@ public class PlayerMovement : MonoBehaviour
 
 		transform.localScale = new Vector3(_direction ,transform.localScale.y ,transform.localScale.z);
 
-		//set & unset walking animation & movement
-		if(Input.GetAxis ("Horizontal" + _playerNumber) > 0 || Input.GetAxis ("Horizontal" + _playerNumber) < 0 && _animator.GetBool("Jumping") == false && _animator.GetBool("Punching") == false)
+		//set & unset walking animation & movement (< 0 && > 0 makes the jump bug)
+		if(Input.GetAxis ("Horizontal" + _playerNumber) < 0 || Input.GetAxis ("Horizontal" + _playerNumber) > 0 && _animator.GetBool("Jumping") == false && _animator.GetBool("Punching") == false && _onGround == true)
 		{
 			_rigidBody.velocity = new Vector3 ((Input.GetAxis ("Horizontal" + _playerNumber) * (_speed)) * Time.deltaTime, _rigidBody.velocity.y, _rigidBody.velocity.z);
 			_animator.SetBool("Walking",true);
@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
 
 	void OnCollisionEnter (Collision collision)
 	{
-		if (collision.gameObject.tag == "Platform")
+		if (collision.gameObject.tag == "Platform" && collision.transform.localPosition.y - transform.localPosition.y <= 310)
 		{
 			//set jumping animation
 			Debug.Log("Hit ground!");
